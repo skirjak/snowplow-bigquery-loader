@@ -37,22 +37,47 @@ object BadRowSchemaValidationSpec {
          "data":{
             "cacheSize":500,
             "repositories":[
-               {
-                 "name":"Iglu Central",
-                 "priority":0,
-                 "vendorPrefixes":[
-                   "com.snowplowanalytics"
-                 ],
-                 "connection":{
-                   "http":{
-                     "uri":"http://iglucentral.com"
-                   }
+              {
+               "name":"Iglu Central Mirror",
+               "priority":1,
+               "vendorPrefixes":[
+                 "com.snowplowanalytics"
+               ],
+               "connection":{
+                 "http":{
+                  "uri":"https://raw.githubusercontent.com/aldemirenes/iglu-central/bq-loader-bad-rows"
                  }
                }
+              },
+              {
+               "name":"Local Iglu Central",
+               "priority":0,
+               "vendorPrefixes":[
+                 "com.snowplowanalytics"
+               ],
+               "connection":{
+                 "http":{
+                  "uri":"http://localhost:8000"
+                 }
+               }
+              },
+              {
+               "name":"Iglu Central",
+               "priority":0,
+               "vendorPrefixes":[
+                 "com.snowplowanalytics"
+               ],
+               "connection":{
+                 "http":{
+                   "uri":"http://iglucentral.com"
+                 }
+               }
+              }
             ]
          }
       }
-    """
+  """
+
 
   val resolver = Resolver.parse(resolverConfig).fold(e => throw new RuntimeException(e.toString), identity)
 
